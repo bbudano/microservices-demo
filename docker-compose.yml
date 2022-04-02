@@ -1,0 +1,100 @@
+version: '3.8'
+
+networks:
+  microservices:
+    name: microservices
+    driver: bridge
+
+services:
+
+  postgres:
+    container_name: postgres
+    image: postgres:14.2-alpine
+    volumes:
+      - ./docker/postgres:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 30s
+      timeout: 5s
+    networks:
+      - microservices
+    ports:
+      - "5432:5432"
+    hostname: microservices-postgres
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    volumes:
+      - ./docker/pgadmin/servers.json:/pgadmin4/servers.json
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    healthcheck:
+      test: [ "CMD-SHELL", "wget --spider http://localhost/misc/ping || exit 1" ]
+      interval: 1m
+      timeout: 30s
+    restart: always
+    networks:
+      - microservices
+    ports:
+      - "15432:80"
+    depends_on:
+      - postgres
+
+  discovery-service:
+    container_name: discovery-service
+    build: ./discovery-service
+    image: discovery-service
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8761/actuator/health | grep UP || exit 1"
+      interval: 30s
+      timeout: 5s
+    restart: always
+    networks:
+      - microservices
+    ports:
+      - "8761:8761"
+
+  api-gateway-service:
+    container_name: api-gateway-service
+    build: ./api-gateway-service
+    image: api-gateway-service
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8080/actuator/health | grep UP || exit 1"
+      interval: 30s
+      timeout: 5s
+    restart: always
+    networks:
+      - microservices
+    ports:
+      - "8080:8080"
+    depends_on:
+      - discovery-service
+
+  exchange-service:
+    container_name: exchange-service
+    build: ./exchange-service
+    image: exchange-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/exchange
+      - SPRING_DATASOURCE_USERNAME=exchange_user
+      - SPRING_DATASOURCE_PASSWORD=exchange_user
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8081/actuator/health | grep UP || exit 1"
+      interval: 30s
+      timeout: 5s
+    restart: always
+    networks:
+      - microservices
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+      - discovery-service
+
+volumes:
+  postgres:
+  pgadmin:
