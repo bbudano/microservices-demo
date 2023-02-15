@@ -35,7 +35,8 @@ public class TickerService {
 
     @Transactional(readOnly = true)
     public ResponseEntity<?> getTickerData(final String pair) {
-        List<Ticker> tickers = pair != null ? tickerRepository.findAllByPairOrderByTimestampDesc(pair) : tickerRepository.findAll();
+        List<Ticker> tickers = pair != null ? tickerRepository.findAllByPairOrderByTimestampDesc(pair) :
+                tickerRepository.findAllByOrderByTimestampDesc();
         List<TickerDto> tickerDtoList = tickers.stream().map(TickerDto::fromEntity).collect(Collectors.toList());
         return ResponseEntity.ok().body(tickerDtoList);
     }

@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface TickerRepository extends JpaRepository<Ticker, Long> {
 
+    List<Ticker> findAllByOrderByTimestampDesc();
+
     List<Ticker> findAllByPairOrderByTimestampDesc(String pair);
 
 }
