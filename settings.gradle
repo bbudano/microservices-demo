@@ -1,5 +1,0 @@
-rootProject.name = 'microservices-demo'
-
-include 'discovery-service'
-include 'api-gateway-service'
-include 'exchange-service'
