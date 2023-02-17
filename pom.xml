@@ -10,7 +10,7 @@
 
     <modules>
         <module>api-gateway</module>
-<!--        <module>discovery-service</module>-->
+        <module>discovery-service</module>
 <!--        <module>exchange-service</module>-->
     </modules>
 
