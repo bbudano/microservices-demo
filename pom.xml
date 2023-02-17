@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <modules>
-<!--        <module>api-gateway</module>-->
+        <module>api-gateway</module>
 <!--        <module>discovery-service</module>-->
 <!--        <module>exchange-service</module>-->
     </modules>
