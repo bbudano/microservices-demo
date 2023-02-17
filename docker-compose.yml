@@ -57,7 +57,7 @@ services:
       interval: 30s
       timeout: 5s
     depends_on:
-      - api-gateway-service
+      - api-gateway
     networks:
       - microservices
     ports:
@@ -92,27 +92,6 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - discovery-service
-
-  exchange-service:
-    container_name: exchange-service
-    build: ./exchange-service
-    image: exchange-service
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/exchange
-      - SPRING_DATASOURCE_USERNAME=exchange_user
-      - SPRING_DATASOURCE_PASSWORD=exchange_user
-    healthcheck:
-      test: "curl --fail --silent http://localhost:8081/actuator/health | grep UP || exit 1"
-      interval: 30s
-      timeout: 5s
-    restart: always
-    networks:
-      - microservices
-    ports:
-      - "8081:8081"
-    depends_on:
-      - postgres
       - discovery-service
 
 volumes:
