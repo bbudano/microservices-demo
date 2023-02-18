@@ -30,7 +30,7 @@ services:
     volumes:
       - ./docker/pgadmin/servers.json:/pgadmin4/servers.json
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@gmail.com
+      - PGADMIN_DEFAULT_EMAIL=admin@demo.com
       - PGADMIN_DEFAULT_PASSWORD=admin
     healthcheck:
       test: [ "CMD-SHELL", "wget --spider http://localhost/misc/ping || exit 1" ]
@@ -103,6 +103,8 @@ services:
       interval: 30s
       timeout: 5s
     restart: always
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/demo
     networks:
       - microservices
     ports:

@@ -1,17 +1,14 @@
--- Create admin
-
-CREATE ROLE exchange_admin LOGIN
-    PASSWORD 'exchange_admin'
+CREATE ROLE demo_admin LOGIN
+    PASSWORD 'demo_admin'
     SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;
 
--- Create database
-
-CREATE DATABASE exchange
-    WITH OWNER = exchange_admin
+CREATE DATABASE demo
+    WITH OWNER = demo_admin
     ENCODING = 'UTF-8'
     TABLESPACE = pg_default
     CONNECTION LIMIT = -1;
 
--- Create user
+\connect demo demo_admin;
+CREATE SCHEMA dev;
 
-CREATE USER exchange_user WITH PASSWORD 'exchange_user' NOSUPERUSER;
+ALTER ROLE demo_admin IN DATABASE demo SET search_path = dev, public;

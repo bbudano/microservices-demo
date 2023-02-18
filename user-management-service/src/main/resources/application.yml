@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: user-management-service
+  datasource:
+    username: demo_admin
+    password: demo_admin
+    url: jdbc:postgresql://localhost:5432/demo
 
 eureka:
   client:
