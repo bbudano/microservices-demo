@@ -8,6 +8,12 @@ spring:
     username: demo_admin
     password: demo_admin
     url: jdbc:postgresql://localhost:5432/demo
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        default_schema: dev
 
 eureka:
   client:
