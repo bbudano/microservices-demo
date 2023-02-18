@@ -11,10 +11,10 @@ spring:
           enabled: true
           lowerCaseServiceId: true
       routes:
-        - id: exchange-service
-          uri: lb://exchange-service
+        - id: user-management-service
+          uri: lb://user-management-service
           predicates:
-            - Path=/api/v1/exchange/**
+            - Path=/api/v1/users/**
 
 eureka:
   client:

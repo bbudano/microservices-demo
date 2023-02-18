@@ -50,8 +50,8 @@ services:
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./docker/nginx/conf.d/demo.conf:/etc/nginx/conf.d/demo.conf
-      - ./docker/nginx/ssl/server.crt:/etc/nginx/ssl/server.crt
-      - ./docker/nginx/ssl/server.key:/etc/nginx/ssl/server.key
+      - ./docker/nginx/ssl/demo.crt:/etc/nginx/ssl/demo.crt
+      - ./docker/nginx/ssl/demo.key:/etc/nginx/ssl/demo.key
     healthcheck:
       test: [ "CMD-SHELL", "wget -O /dev/null http://localhost || exit 1" ]
       interval: 30s
@@ -93,6 +93,22 @@ services:
       - "8080:8080"
     depends_on:
       - discovery-service
+
+  user-management-service:
+    container_name: user-management-service
+    build: ./user-management-service
+    image: user-management-service
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8081/actuator/health | grep UP || exit 1"
+      interval: 30s
+      timeout: 5s
+    restart: always
+    networks:
+      - microservices
+    ports:
+      - "8081:8081"
+    depends_on:
+      - api-gateway
 
 volumes:
   postgres:
