@@ -79,6 +79,22 @@ services:
     ports:
       - "8761:8761"
 
+  admin-server:
+    container_name: admin-server
+    build: ./admin-server
+    image: admin-server
+    healthcheck:
+      test: "curl --fail --silent http://localhost:9000/actuator/health | grep UP || exit 1"
+      interval: 30s
+      timeout: 5s
+    restart: always
+    networks:
+      - microservices
+    ports:
+      - "9000:9000"
+    depends_on:
+      - discovery-service
+
   api-gateway:
     container_name: api-gateway
     build: ./api-gateway
