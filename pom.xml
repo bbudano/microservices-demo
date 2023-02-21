@@ -11,6 +11,7 @@
     <modules>
         <module>admin-server</module>
         <module>api-gateway</module>
+        <module>config-server</module>
         <module>discovery-service</module>
         <module>user-management-service</module>
     </modules>
