@@ -4,7 +4,13 @@ server:
 spring:
   application:
     name: api-gateway
+  config:
+    import: "optional:configserver:"
   cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
     gateway:
       discovery:
         locator:

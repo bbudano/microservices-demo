@@ -79,6 +79,24 @@ services:
     ports:
       - "8761:8761"
 
+  config-server:
+    container_name: config-server
+    build: ./config-server
+    image: config-server
+    volumes:
+      - ./config-server/configurations:/root/configurations
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8888/actuator/health | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+    restart: always
+    networks:
+      - microservices
+    ports:
+      - "8888:8888"
+    depends_on:
+      - discovery-service
+
   admin-server:
     container_name: admin-server
     build: ./admin-server
@@ -93,7 +111,8 @@ services:
     ports:
       - "9000:9000"
     depends_on:
-      - discovery-service
+      config-server:
+        condition: service_healthy
 
   api-gateway:
     container_name: api-gateway
@@ -109,7 +128,8 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - discovery-service
+      config-server:
+        condition: service_healthy
 
   user-management-service:
     container_name: user-management-service
@@ -127,7 +147,8 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      - api-gateway
+      config-server:
+        condition: service_healthy
 
 volumes:
   postgres:
