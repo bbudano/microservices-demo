@@ -4,6 +4,13 @@ server:
 spring:
   application:
     name: admin-server
+  config:
+    import: "optional:configserver:"
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
 
 eureka:
   client:
