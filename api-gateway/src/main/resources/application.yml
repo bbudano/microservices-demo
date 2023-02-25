@@ -20,7 +20,7 @@ spring:
         - id: user-management-service
           uri: lb://user-management-service
           predicates:
-            - Path=/api/v1/users/**, /login
+            - Path=/api/v1/users/**, /login, /logout
 
 eureka:
   client:

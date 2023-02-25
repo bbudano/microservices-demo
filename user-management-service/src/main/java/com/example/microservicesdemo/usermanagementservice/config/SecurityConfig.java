@@ -33,6 +33,10 @@ public class SecurityConfig {
                 )
                 .userDetailsService(userService)
                 .formLogin(Customizer.withDefaults())
+                .logout(logout -> logout
+                        .deleteCookies("JSESSIONID")
+                        .invalidateHttpSession(true)
+                )
                 .build();
     }
 
