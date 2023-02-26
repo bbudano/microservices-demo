@@ -21,10 +21,14 @@ eureka:
       defaultZone: http://discovery-service:8761/eureka
 
 management:
-  endpoint:
-    health:
-      show-details: always
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: "health,info,prometheus"
+  endpoint:
+    health:
+      enabled: true
+    info:
+      enabled: true
+    prometheus:
+      enabled: true

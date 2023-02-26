@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 15s
+  scrape_timeout: 15s
+scrape_configs:
+  - job_name: 'microservices-demo'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['discovery-service:8761']
+      - targets: ['config-server:8888']
+      - targets: ['admin-server:9000']
+      - targets: ['api-gateway:8080']
+      - targets: ['user-management-service:8081']
