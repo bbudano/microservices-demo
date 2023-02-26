@@ -17,11 +17,25 @@ spring:
     password: demo_admin
     url: jdbc:postgresql://localhost:5432/demo
   jpa:
-    hibernate:
-      ddl-auto: create
+    show-sql: false
     properties:
       hibernate:
         default_schema: dev
+        format_sql: true
+        hbm2ddl:
+          delimiter: ;
+      jakarta:
+        persistence:
+          schema-generation:
+            create-source: metadata
+            scripts:
+              action: none
+              create-target: ./user-management-service/target/generated_schema.sql
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    default-schema: dev
+    drop-first: true
+    enabled: true
 
 eureka:
   client:
