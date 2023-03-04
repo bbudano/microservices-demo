@@ -16,6 +16,12 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./ssl/demo.key 
 docker compose up -d
 ```
 
+## Grafana
+To view dashboard navigate to:
+```
+http://localhost:3000
+```
+
 
 ## Example of updating api gateway loggin level via config server
 Navigate to service yml file to view current configuration:
