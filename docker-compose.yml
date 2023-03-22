@@ -183,6 +183,19 @@ services:
     networks:
       - microservices
 
+  react-frontend:
+    container_name: react-frontend
+    build:
+      context: react-frontend
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - api-gateway
+    ports:
+      - "81:80"
+    networks:
+      - microservices
+
 volumes:
   postgres:
   pgadmin:
