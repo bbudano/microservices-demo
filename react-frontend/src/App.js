@@ -1,22 +1,38 @@
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react';
+
+axios.defaults.withCredentials = true;
 
 function App() {
+
+  const [user, setUser] = useState(null);
+
+  const getUserProfile = () => {
+    axios.get('/api/v1/users/profile')
+    .then(response => setUser(response.data))
+    .catch(error => setUser(null));
+  }
+
+  const logout = () => {
+    axios.post('/logout')
+    .then(response => setUser(null))
+  }
+
+  useEffect(() => {
+    getUserProfile();
+  }, [])
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        {user && <div>
+          <p>{`Email: ${user.email}`}</p>
+          <p>{`Role: ${user.role}`}</p>
+          <button onClick={logout}>Logout</button>
+        </div>}
       </header>
     </div>
   );

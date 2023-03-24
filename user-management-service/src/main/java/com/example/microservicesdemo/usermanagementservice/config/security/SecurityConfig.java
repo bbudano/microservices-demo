@@ -1,4 +1,4 @@
-package com.example.microservicesdemo.usermanagementservice.config;
+package com.example.microservicesdemo.usermanagementservice.config.security;
 
 import com.example.microservicesdemo.usermanagementservice.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +18,8 @@ public class SecurityConfig {
 
     private final UserService userService;
 
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
+
     @Bean
     BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -32,10 +34,12 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userService)
-                .formLogin(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults())
                 .logout(logout -> logout
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
+                        .logoutSuccessHandler(customLogoutSuccessHandler)
+                        .logoutSuccessUrl("/")
                 )
                 .build();
     }
