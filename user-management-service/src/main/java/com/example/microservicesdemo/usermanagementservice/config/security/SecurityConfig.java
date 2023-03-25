@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .userDetailsService(userService)
                 .httpBasic(Customizer.withDefaults())
                 .logout(logout -> logout
-                        .deleteCookies("JSESSIONID")
+//                        .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
                         .logoutSuccessHandler(customLogoutSuccessHandler)
                         .logoutSuccessUrl("/")
